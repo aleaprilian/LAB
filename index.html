@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>LAB MERDEKA - VR Front Screen</title>
     <style>
         body { margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif; background-color: #111; }
-        
         /* Panel Info Ruangan */
         #ui-container {
             position: absolute;
@@ -18,12 +17,11 @@
             padding: 20px;
             color: #fff;
             border-radius: 8px;
-            display: none; 
+            display: none;
             z-index: 10;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            pointer-events: auto; /* allow interaction if needed */
+            pointer-events: auto;
         }
-
         /* Judul */
         #title-card {
             position: absolute;
@@ -37,7 +35,6 @@
             user-select: none;
             z-index: 10;
         }
-
         .tag {
             display: inline-block;
             margin-top: 8px;
@@ -48,11 +45,9 @@
             border-radius: 6px;
             font-size: 0.85rem;
         }
-
         h1 { margin: 0; font-size: 1.5rem; }
         h2 { margin-top: 0; color: #00d2ff; font-size: 1.2rem; }
         p { font-size: 0.9rem; color: #ccc; }
-        
         /* Instruksi Kontrol Dynamic */
         #controls-help {
             position: absolute;
@@ -69,7 +64,6 @@
             transition: all 0.3s;
         }
         .key { background: #444; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-family: monospace; }
-        
         /* Tombol Masuk FPV */
         #fpv-container {
             position: absolute;
@@ -79,7 +73,6 @@
             z-index: 20;
             text-align: center;
         }
-
         #start-fpv-btn {
             background: rgba(0, 210, 255, 0.15);
             border: 2px solid #00d2ff;
@@ -100,7 +93,6 @@
             color: #000;
             box-shadow: 0 0 25px rgba(0, 210, 255, 0.6);
         }
-
         /* Hint ESC */
         #esc-hint {
             position: absolute;
@@ -117,7 +109,6 @@
             border: 1px solid #555;
         }
         #esc-hint b { color: #00d2ff; }
-
     </style>
 </head>
 <body>
@@ -201,25 +192,23 @@
         scene.fog = new THREE.Fog(0x15151a, 20, 150);
 
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        
+
         // Start view focuses on the VR Room
-        const POS_OVERVIEW = new THREE.Vector3(32.5, 40, 40); 
-        const TARGET_OVERVIEW = new THREE.Vector3(32.5, 0, -10); 
-        
-        const POS_FPV = new THREE.Vector3(0, 2.5, 30); 
-        const TARGET_FPV = new THREE.Vector3(0, 2.5, 29.9); 
+        const POS_OVERVIEW = new THREE.Vector3(32.5, 40, 40);
+        const TARGET_OVERVIEW = new THREE.Vector3(32.5, 0, -10);
+
+        const POS_FPV = new THREE.Vector3(0, 2.5, 30);
+        const TARGET_FPV = new THREE.Vector3(0, 2.5, 29.9);
 
         camera.position.copy(POS_OVERVIEW);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
-
         // fix for Hi-DPI / Retina displays (prevents blurriness)
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
-
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.domElement.tabIndex = 1; 
+        renderer.domElement.tabIndex = 1;
         document.body.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -227,7 +216,7 @@
         controls.dampingFactor = 0.1;
         controls.target.copy(TARGET_OVERVIEW);
         controls.maxPolarAngle = Math.PI / 2 - 0.05;
-        
+
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         scene.add(ambientLight);
         const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
@@ -241,44 +230,44 @@
         const matFloor = new THREE.MeshStandardMaterial({ color: 0x3d4c53, roughness: 0.8 });
         const matWall = new THREE.MeshStandardMaterial({ color: 0xeeeeee, roughness: 0.4 });
         const matGlass = new THREE.MeshPhongMaterial({ color: 0x88ccff, opacity: 0.2, transparent: true, side: THREE.DoubleSide });
-        const matFurniture = new THREE.MeshStandardMaterial({ color: 0x333333 }); 
-        const matTable = new THREE.MeshStandardMaterial({ color: 0xffffff }); 
+        const matFurniture = new THREE.MeshStandardMaterial({ color: 0x333333 });
+        const matTable = new THREE.MeshStandardMaterial({ color: 0xffffff });
         const matScreen = new THREE.MeshStandardMaterial({ color: 0x00d2ff, emissive: 0x0055aa, emissiveIntensity: 0.5 });
         const matHolo = new THREE.MeshPhongMaterial({ color: 0x00ffff, opacity: 0.6, transparent: true, side: THREE.DoubleSide });
-        const matGS = new THREE.MeshStandardMaterial({ color: 0x00aa00, roughness: 1 }); 
-        const matCarpet = new THREE.MeshStandardMaterial({ color: 0x3d4c53 }); 
+        const matGS = new THREE.MeshStandardMaterial({ color: 0x00aa00, roughness: 1 });
+        const matCarpet = new THREE.MeshStandardMaterial({ color: 0x3d4c53 });
         const matNeon = new THREE.MeshBasicMaterial({ color: 0x00d2ff });
         const matSensor = new THREE.MeshStandardMaterial({ color: 0x111111 });
         const matFabric = new THREE.MeshStandardMaterial({ color: 0x555555 });
         const matWood = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
         const matWoodAccent = new THREE.MeshStandardMaterial({ color: 0xd2a679, roughness: 0.6 });
-        const matServer = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.7, metalness: 0.3 }); 
+        const matServer = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.7, metalness: 0.3 });
         const matPaper = new THREE.MeshStandardMaterial({ color: 0xffffff });
         const matCup = new THREE.MeshStandardMaterial({ color: 0xff5500 });
         const matDarkGadget = new THREE.MeshStandardMaterial({ color: 0x222222 });
         const matVRRug = new THREE.MeshStandardMaterial({ color: 0x999999, roughness: 1 });
         const matPot = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
         const matPlantGreen = new THREE.MeshStandardMaterial({ color: 0x228B22 });
-        const matSoftbox = new THREE.MeshBasicMaterial({ color: 0xffffff }); 
-        const matAcoustic = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.9 }); 
-        
-        const matWoodPanel = new THREE.MeshStandardMaterial({ color: 0x5c4033, roughness: 0.7 }); 
-        const matModernChair = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8 }); 
-        const matWhiteTable = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 }); 
-        const matCityLights = new THREE.MeshBasicMaterial({ color: 0x050510 }); 
+        const matSoftbox = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const matAcoustic = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.9 });
+
+        const matWoodPanel = new THREE.MeshStandardMaterial({ color: 0x5c4033, roughness: 0.7 });
+        const matModernChair = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8 });
+        const matWhiteTable = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+        const matCityLights = new THREE.MeshBasicMaterial({ color: 0x050510 });
         const matLaptop = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
-        const matServerLights = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); 
+        const matServerLights = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const matCeilingLight = new THREE.MeshBasicMaterial({ color: 0xffffff });
-        
+
         const matChartRed = new THREE.MeshLambertMaterial({ color: 0xff3333 });
         const matChartGreen = new THREE.MeshLambertMaterial({ color: 0x33ff33 });
         const matChartBlue = new THREE.MeshLambertMaterial({ color: 0x3333ff });
         const matChartYellow = new THREE.MeshLambertMaterial({ color: 0xffff33 });
         const matScreenDark = new THREE.MeshStandardMaterial({ color: 0x001133, emissive: 0x000510, roughness: 0.2 });
         const matScreenFrame = new THREE.MeshStandardMaterial({ color: 0x555555, metalness: 0.8, roughness: 0.2 });
-        const matRackMetal = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.6, roughness: 0.4 }); 
-        const matCardboard = new THREE.MeshStandardMaterial({ color: 0xc19a6b }); 
-        const matPlasticBox = new THREE.MeshPhysicalMaterial({ color: 0xeeeeee, transparent: true, opacity: 0.5, roughness: 0.2 }); 
+        const matRackMetal = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.6, roughness: 0.4 });
+        const matCardboard = new THREE.MeshStandardMaterial({ color: 0xc19a6b });
+        const matPlasticBox = new THREE.MeshPhysicalMaterial({ color: 0xeeeeee, transparent: true, opacity: 0.5, roughness: 0.2 });
         const matCabinet = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.4, roughness: 0.5 });
         const matNeonRed = new THREE.MeshBasicMaterial({ color: 0xff0055 });
 
@@ -330,7 +319,7 @@
             group.add(hGroup);
             return hGroup;
         }
-        
+
         function createVRCabinet(x, y, z, rotY) {
             const cabGroup = new THREE.Group();
             cabGroup.position.set(x, y, z);
@@ -350,7 +339,7 @@
             }
             group.add(cabGroup);
         }
-        
+
         function createSoftbox(x, y, z, rotY) {
             const sbGroup = new THREE.Group();
             sbGroup.position.set(x, y, z); sbGroup.rotation.y = rotY;
@@ -400,7 +389,7 @@
             base.position.y = 0.025; chairGroup.add(base);
             group.add(chairGroup);
         }
-        
+
         function createServerRack(x, y, z, rotY=0) {
             const rackGroup = new THREE.Group();
             rackGroup.position.set(x, y, z); rackGroup.rotation.y = rotY;
@@ -433,8 +422,8 @@
         function createWallTV(x, y, z, rotY) {
             const tvGroup = new THREE.Group();
             tvGroup.position.set(x, y, z);
-            tvGroup.rotation.y = rotY; 
-            const frameGeo = new THREE.BoxGeometry(0.1, 3.4, 9.0); 
+            tvGroup.rotation.y = rotY;
+            const frameGeo = new THREE.BoxGeometry(0.1, 3.4, 9.0);
             const frame = new THREE.Mesh(frameGeo, new THREE.MeshStandardMaterial({color: 0x111111, metalness: 0.8, roughness: 0.2}));
             tvGroup.add(frame);
             const screenGeo = new THREE.BoxGeometry(0.05, 3.2, 4.2);
@@ -454,7 +443,7 @@
         function createChartScreen(x, y, z) {
              const chartGroup = new THREE.Group();
              chartGroup.position.set(x, y, z);
-             chartGroup.rotation.y = -Math.PI/2; 
+             chartGroup.rotation.y = -Math.PI/2;
              const frame = new THREE.Mesh(new THREE.BoxGeometry(8.2, 3.7, 0.05), matScreenFrame);
              chartGroup.add(frame);
              const screen = new THREE.Mesh(new THREE.BoxGeometry(8, 3.5, 0.1), matScreenDark);
@@ -472,7 +461,7 @@
              slice.position.set(3.5, 0.5, 0.2); chartGroup.add(slice);
              return chartGroup;
         }
-        
+
         function createStorageRack(x, y, z, rotY=0) {
             const rackGroup = new THREE.Group();
             rackGroup.position.set(x, y, z);
@@ -502,13 +491,12 @@
             group.add(rackGroup);
         }
 
-
         // --- BUILD ---
         const WALL_H = 6; const WALL_T = 0.5;
-        
+
         const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({color: 0x1a1a1a}));
         ground.rotation.x = -Math.PI/2; ground.position.y = -0.3; scene.add(ground);
-        createBox(85, 0.5, 40, 12.5, -0.25, 0, matFloor); 
+        createBox(85, 0.5, 40, 12.5, -0.25, 0, matFloor);
 
         // Outer Walls
         createBox(85, WALL_H, WALL_T, 12.5, 3, -20, matWall); // Top
@@ -519,7 +507,7 @@
         createBox(10, 2, WALL_T, 0, 5, 20, matWall); // Header Door
 
         // Inner Walls
-        createBox(WALL_T, WALL_H, 20, -10, 3, -10, matWall); 
+        createBox(WALL_T, WALL_H, 20, -10, 3, -10, matWall);
         createBox(WALL_T, WALL_H, 20, 10, 3, -10, matWall);
         createBox(6, WALL_H, WALL_T, -27, 3, 0, matWall);
         createBox(6, WALL_H, WALL_T, -13, 3, 0, matWall);
@@ -530,7 +518,7 @@
         createBox(6, WALL_H, WALL_T, 13, 3, 0, matWall);
         createBox(31, WALL_H, WALL_T, 39.5, 3, 0, matWall);
         createBox(8, 2, WALL_T, 20, 5, 0, matWall);
-        createBox(25, WALL_H, WALL_T, 42.5, 3, 10, matWall); 
+        createBox(25, WALL_H, WALL_T, 42.5, 3, 10, matWall);
         createBox(WALL_T, WALL_H, 3, 30, 3, 1.5, matWall);
         createBox(WALL_T, WALL_H, 3, 30, 3, 8.5, matWall);
         createBox(WALL_T, 2, 4, 30, 5, 5, matWall);
@@ -539,37 +527,37 @@
         createBox(WALL_T, 2, 4, 30, 5, 15, matWall);
 
         // MEDIA PRODUCTION
-        createBox(18, 4.5, 0.2, -20, 2.25, -19.5, matGS); 
-        createBox(18, 0.05, 3, -20, 0.06, -18, matGS); 
-        createBox(5, 1.2, 1.5, -25, 0.6, -8, matTable); 
-        createChair(-25, -6.5, 0); 
-        createBox(0.8, 1.5, 1.5, -27, 1.35, -8, matServer); createBox(0.1, 1.2, 0.1, -26.5, 1.35, -7.3, matNeon); 
-        createMonitor(-25, 1.2, -8, 0.2); createMonitor(-24, 1.2, -7.8, -0.2); 
-        createBox(0.8, 0.1, 0.5, -25, 1.25, -7.5, matDarkGadget); createBox(0.1, 0.8, 0.1, -23.5, 1.6, -8, matDarkGadget); createBox(0.2, 0.4, 0.2, -23.5, 2, -8, new THREE.MeshStandardMaterial({color:0x888888})); 
-        createTripodCamera(-20, 0, -12, 0); createSoftbox(-24, 0, -14, 0.5); createSoftbox(-16, 0, -14, -0.5); 
-        
+        createBox(18, 4.5, 0.2, -20, 2.25, -19.5, matGS);
+        createBox(18, 0.05, 3, -20, 0.06, -18, matGS);
+        createBox(5, 1.2, 1.5, -25, 0.6, -8, matTable);
+        createChair(-25, -6.5, 0);
+        createBox(0.8, 1.5, 1.5, -27, 1.35, -8, matServer); createBox(0.1, 1.2, 0.1, -26.5, 1.35, -7.3, matNeon);
+        createMonitor(-25, 1.2, -8, 0.2); createMonitor(-24, 1.2, -7.8, -0.2);
+        createBox(0.8, 0.1, 0.5, -25, 1.25, -7.5, matDarkGadget); createBox(0.1, 0.8, 0.1, -23.5, 1.6, -8, matDarkGadget); createBox(0.2, 0.4, 0.2, -23.5, 2, -8, new THREE.MeshStandardMaterial({color:0x888888}));
+        createTripodCamera(-20, 0, -12, 0); createSoftbox(-24, 0, -14, 0.5); createSoftbox(-16, 0, -14, -0.5);
+
         // UX TESTING
         createBox(18, 0.1, 18, 0, 0.05, -10, matCarpet);
-        createBox(18, 0.05, 0.1, 0, 0.06, -19, matNeon); createBox(18, 0.05, 0.1, 0, 0.06, -1, matNeon);  
-        createBox(0.1, 0.05, 18, -9, 0.06, -10, matNeon); createBox(0.1, 0.05, 18, 9, 0.06, -10, matNeon);  
-        createBox(0.4, WALL_H, 0.4, 0, 3, -12, matFurniture); createBox(0.4, WALL_H, 0.4, 0, 3, -18, matFurniture); createBox(0.1, WALL_H, 10, 0, 3, -13, matGlass); 
-        createBox(2.5, 1.2, 1.2, -4, 0.6, -12, matTable); createChair(-4, -10.5, 0); createChair(-4, -13.5, Math.PI); 
-        createMonitor(-4, 1.2, -12); createPlant(-8, 0, -18); createBox(0.3, 0.05, 0.4, -3.5, 1.22, -12, matPaper); 
+        createBox(18, 0.05, 0.1, 0, 0.06, -19, matNeon); createBox(18, 0.05, 0.1, 0, 0.06, -1, matNeon);
+        createBox(0.1, 0.05, 18, -9, 0.06, -10, matNeon); createBox(0.1, 0.05, 18, 9, 0.06, -10, matNeon);
+        createBox(0.4, WALL_H, 0.4, 0, 3, -12, matFurniture); createBox(0.4, WALL_H, 0.4, 0, 3, -18, matFurniture); createBox(0.1, WALL_H, 10, 0, 3, -13, matGlass);
+        createBox(2.5, 1.2, 1.2, -4, 0.6, -12, matTable); createChair(-4, -10.5, 0); createChair(-4, -13.5, Math.PI);
+        createMonitor(-4, 1.2, -12); createPlant(-8, 0, -18); createBox(0.3, 0.05, 0.4, -3.5, 1.22, -12, matPaper);
         createBox(0.2, 0.02, 0.3, -4.5, 1.22, -11.8, matDarkGadget);
         createBox(5, 1.2, 1.5, 6.5, 0.6, -1.5, matFurniture); createBox(1.5, 1.2, 5, 8.25, 0.6, -4, matFurniture);
-        createChair(6.5, -3.5, Math.PI/4); 
+        createChair(6.5, -3.5, Math.PI/4);
         const heatMap = new THREE.Mesh(new THREE.PlaneGeometry(2, 1.5), matHolo);
         heatMap.position.set(6.5, 2.5, -1.5); heatMap.rotation.x = -0.1; group.add(heatMap);
         const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.08, 0.2, 16), matCup);
-        cup.position.set(8, 1.3, -2); group.add(cup); 
+        cup.position.set(8, 1.3, -2); group.add(cup);
         createBox(0.4, 0.05, 0.3, 5, 1.22, -1.5, matPaper); createBox(0.1, 0.3, 0.1, 8.2, 1.35, -5, matDarkGadget);
         createBox(3.5, 1.2, 1.2, 4, 0.6, -12, matTable); createChair(4, -10.5, 0); createChair(4, -13.5, Math.PI); createMonitor(4, 1.2, -12);
         createBox(0.3, 0.05, 0.4, 4.5, 1.22, -12, matPaper);
-        createBox(1.5, 3.5, 1.5, 9, 1.75, -10, matServer); createBox(1.2, 0.1, 0.1, 9, 3, -9.2, matNeon); 
+        createBox(1.5, 3.5, 1.5, 9, 1.75, -10, matServer); createBox(1.2, 0.1, 0.1, 9, 3, -9.2, matNeon);
         createBox(3, 0.2, 0.8, 9, 3, -16, matWoodAccent); createBox(3, 0.2, 0.8, 9, 4, -16, matWoodAccent);
-        createBox(0.5, 0.4, 0.5, 9, 3.3, -16, matFurniture); createBox(0.2, 0.3, 0.2, 8.5, 3.25, -16, matCup); 
+        createBox(0.5, 0.4, 0.5, 9, 3.3, -16, matFurniture); createBox(0.2, 0.3, 0.2, 8.5, 3.25, -16, matCup);
         const posterGeo = new THREE.BoxGeometry(0.1, 2, 1.5);
-        const poster = new THREE.Mesh(posterGeo, new THREE.MeshStandardMaterial({color: 0x336699})); 
+        const poster = new THREE.Mesh(posterGeo, new THREE.MeshStandardMaterial({color: 0x336699}));
         poster.position.set(9.9, 3, -6); group.add(poster);
 
         // VR (UPDATED)
@@ -578,25 +566,26 @@
         vrRing.rotation.x = -Math.PI/2; vrRing.position.set(32.5, 0.05, -10); group.add(vrRing);
         createBox(0.2, WALL_H, 0.1, 20, 3, -19.8, matNeon); createBox(0.2, WALL_H, 0.1, 45, 3, -19.8, matNeon);
         createSensor(15, 5, -19.5); createSensor(50, 5, -19.5); createSensor(10.5, 5, -5); createSensor(54.5, 5, -5);
-        
+
         // GLASS CABINET ON LEFT WALL (X=15, Z=-19.5) Facing East
-        createVRCabinet(15, 0, -19.5, 0); 
-        
-        // NEW: WALL TV ON RIGHT WALL OF VR ROOM (Facing Left/West) (X=54.6, Z=-10)
-        createWallTV(54.6, 3.5, -10, Math.PI); // Rotate 180 to face left?
+        createVRCabinet(15, 0, -19.5, 0);
+
+        // WALL TV ON RIGHT WALL OF VR ROOM
+        createWallTV(54.6, 3.5, -10, Math.PI);
+
         const holoCube = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 0.4), matHolo);
         holoCube.position.set(32.5, 2.2, -10);
         holoCube.rotation.x = Math.PI/4; holoCube.rotation.z = Math.PI/4; group.add(holoCube);
         function animateHolo() { holoCube.rotation.y += 0.01; requestAnimationFrame(animateHolo); }
         animateHolo();
-        createBox(1.5, 1.2, 8, 53.5, 0.6, -10, matTable); 
+        createBox(1.5, 1.2, 8, 53.5, 0.6, -10, matTable);
         createChair(51.5, -8, 0); createChair(51.5, -12, 0);
         createMonitor(53.5, 1.2, -8, -Math.PI/2); createMonitor(53.5, 1.2, -12, -Math.PI/2);
 
         // AI
         for(let z=1; z<9; z+=2) { createBox(0.2, 4, 0.5, 54.8, 3, z, matWoodAccent); }
         const dbScreen = createChartScreen(54.6, 3.5, 5); group.add(dbScreen);
-        createBox(1.5, 1.2, 18, 51, 0.6, 5, matTable); 
+        createBox(1.5, 1.2, 18, 51, 0.6, 5, matTable);
         createChair(48.5, 2, -Math.PI/2); createMonitor(51, 1.2, 2, -Math.PI/2); createMonitor(51, 1.2, 1, -Math.PI/2 - 0.2);
         createChair(48.5, 5, -Math.PI/2); createMonitor(51, 1.2, 5, -Math.PI/2); createMonitor(51, 1.2, 4, -Math.PI/2 - 0.2); createMonitor(51, 1.2, 6, -Math.PI/2 + 0.2);
         createChair(48.5, 8, -Math.PI/2); createMonitor(51, 1.2, 8, -Math.PI/2);
@@ -609,32 +598,32 @@
         createStorageRack(53, 0, 12.5, Math.PI/2); createStorageRack(53, 0, 15.0, Math.PI/2); createStorageRack(53, 0, 17.5, Math.PI/2);
         createStorageRack(32, 0, 12.0, Math.PI/2); createStorageRack(32, 0, 18.0, Math.PI/2);
         createStorageRack(35, 0, 19, 0); createStorageRack(40, 0, 19, 0); createStorageRack(45, 0, 19, 0); createStorageRack(50, 0, 19, 0);
-        createBox(3, 1.0, 1.5, 42.5, 0.5, 15, matTable); createBox(0.5, 0.5, 0.5, 43, 1.25, 15, matCardboard); createBox(0.1, 0.1, 1, 42, 1.05, 15, matDarkGadget); 
+        createBox(3, 1.0, 1.5, 42.5, 0.5, 15, matTable); createBox(0.5, 0.5, 0.5, 43, 1.25, 15, matCardboard); createBox(0.1, 0.1, 1, 42, 1.05, 15, matDarkGadget);
         const storeLight = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), matCeilingLight);
         storeLight.rotation.x = Math.PI/2; storeLight.position.set(42.5, 5.9, 15); group.add(storeLight);
         createBox(0.6, 0.6, 0.6, 38, 0.3, 14, matCardboard); createBox(0.6, 0.6, 0.6, 38, 0.9, 14, matCardboard); createBox(0.5, 0.5, 0.5, 38.6, 0.25, 14.2, matPlasticBox);
         createClosedCabinet(40, 0, 19.2, 0); createClosedCabinet(45, 0, 19.2, 0);
-        
+
         // COLLAB
         for(let x=-28; x<52; x+=4) { if (Math.abs(x) < 6) continue; createBox(0.5, 4, 0.2, x, 3, 19.8, matWoodPanel); }
-        const tableGeo = new THREE.CylinderGeometry(1, 1, 0.2, 64); 
+        const tableGeo = new THREE.CylinderGeometry(1, 1, 0.2, 64);
         const table = new THREE.Mesh(tableGeo, matWhiteTable);
         table.position.set(0, 0.8, 10); table.scale.set(12, 1, 4); group.add(table);
         for(let x = 0 - 8; x <= 0 + 8; x += 4) {
-             createModernChair(x, 0, 14.5, 0); createModernChair(x, 0, 5.5, Math.PI); 
+             createModernChair(x, 0, 14.5, 0); createModernChair(x, 0, 5.5, Math.PI);
              createBox(0.8, 0.05, 0.6, x, 0.92, 12, matLaptop); createBox(0.8, 0.05, 0.6, x, 0.92, 8, matLaptop);
         }
-        createModernChair(0 - 13, 0, 10, -Math.PI/2); createModernChair(0 + 13, 0, 10, Math.PI/2);  
+        createModernChair(0 - 13, 0, 10, -Math.PI/2); createModernChair(0 + 13, 0, 10, Math.PI/2);
         const collabScreen = new THREE.Mesh(new THREE.PlaneGeometry(20, 3), matCityLights);
         collabScreen.position.set(0, 3.5, 19.7); group.add(collabScreen);
         createPlant(-25, 0, 18); createPlant(50, 0, 18);
-        createWallTV(-29.5, 3.5, 10, 0); 
+        createWallTV(-29.5, 3.5, 10, 0);
 
         // ZONES
         const zones = [];
         function createZone(id, w, d, x, z) {
             const geo = new THREE.PlaneGeometry(w, d);
-            const mat = new THREE.MeshBasicMaterial({ visible: false }); 
+            const mat = new THREE.MeshBasicMaterial({ visible: false });
             const mesh = new THREE.Mesh(geo, mat);
             mesh.rotation.x = -Math.PI/2; mesh.position.set(x, 0.5, z);
             mesh.userData = { id: id }; group.add(mesh); zones.push(mesh);
@@ -669,7 +658,7 @@
         renderer.domElement.addEventListener('mousedown', (e) => { isDragging = false; startX = e.clientX; startY = e.clientY; });
         renderer.domElement.addEventListener('mousemove', (e) => { if(Math.abs(e.clientX - startX) > 3 || Math.abs(e.clientY - startY) > 3) isDragging = true; });
         renderer.domElement.addEventListener('mouseup', (e) => {
-            if(isDragging || isFPV) return; 
+            if(isDragging || isFPV) return;
             mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(zones);
@@ -678,7 +667,7 @@
                 const ui = document.getElementById('ui-container'); ui.style.display = 'block';
                 document.getElementById('room-name').textContent = data.name;
                 document.getElementById('room-desc').textContent = data.desc;
-                // FIXED: use string/backticks for innerHTML (was syntax error previously)
+                // <-- FIXED: innerHTML must be a string (backticks) not raw HTML token
                 document.getElementById('room-tech').innerHTML = `<span class="tag">${data.tech}</span>`;
                 gsap.to(controls.target, { x: obj.position.x, y: 0, z: obj.position.z, duration: 1 });
             } else { document.getElementById('ui-container').style.display = 'none'; }
